@@ -42,14 +42,14 @@ Example
 
     # STFT analysis parameters
     fft_size = 4096  # `fft_size / fs` should be ~RT60
-    hop == fft_size // 2  # half-overlap
+    hop = fft_size // 2  # half-overlap
     win_a = pra.hann(fft_size)  # analysis window
     # optimal synthesis window
-    win_s = pra.transform.compute_synthesis_window(win_a, hop)
+    win_s = pra.transform.stft.compute_synthesis_window(win_a, hop)
 
     # STFT
     # X.shape == (nframes, nfrequencies, nchannels)
-    X = pra.transform.analysis(audio, fft_size, hop, win=win_a)
+    X = pra.transform.stft.analysis(audio, fft_size, hop, win=win_a)
 
     # Separation
     Y = pra.bss.auxiva(X, n_iter=20)
@@ -57,7 +57,7 @@ Example
     # iSTFT (introduces an offset of `hop` samples)
     # y contains the time domain separated signals
     # y.shape == (new_nsamples, nchannels)
-    y = pra.transform.synthesis(Y, fft_size, hop, win=win_s)
+    y = pra.transform.stft.synthesis(Y, fft_size, hop, win=win_s)
 
 References
 ----------
